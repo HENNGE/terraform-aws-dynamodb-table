@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "this" {
-  count = var.create_table && !var.autoscaling_enabled ? 1 : 0
+  count = var.create_table && !var.autoscaling_enabled && !var.ignore_changes_replica ? 1 : 0
 
   name                        = var.name
   billing_mode                = var.billing_mode
@@ -239,7 +239,7 @@ resource "aws_dynamodb_table" "replica_ignore" {
 }
 
 resource "aws_dynamodb_table" "autoscaled" {
-  count = var.create_table && var.autoscaling_enabled && !var.ignore_changes_global_secondary_index ? 1 : 0
+  count = var.create_table && var.autoscaling_enabled && !var.ignore_changes_global_secondary_index && !var.ignore_changes_replica ? 1 : 0
 
   name                        = var.name
   billing_mode                = var.billing_mode
@@ -483,7 +483,7 @@ resource "aws_dynamodb_table" "autoscaled_replica_ignore" {
 }
 
 resource "aws_dynamodb_table" "autoscaled_gsi_ignore" {
-  count = var.create_table && var.autoscaling_enabled && var.ignore_changes_global_secondary_index ? 1 : 0
+  count = var.create_table && var.autoscaling_enabled && var.ignore_changes_global_secondary_index && !var.ignore_changes_replica ? 1 : 0
 
   name                        = var.name
   billing_mode                = var.billing_mode
