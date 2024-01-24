@@ -84,7 +84,7 @@ resource "aws_appautoscaling_policy" "index_read_policy" {
 
     scale_in_cooldown  = merge(var.autoscaling_defaults, each.value)["scale_in_cooldown"]
     scale_out_cooldown = merge(var.autoscaling_defaults, each.value)["scale_out_cooldown"]
-    target_value       = merge(var.autoscaling_defaults, each.value)["target_value"]
+    target_value       = merge(var.autoscaling_defaults, each.value)["read_target_value"]
   }
 }
 
@@ -114,6 +114,6 @@ resource "aws_appautoscaling_policy" "index_write_policy" {
 
     scale_in_cooldown  = merge(var.autoscaling_defaults, each.value)["scale_in_cooldown"]
     scale_out_cooldown = merge(var.autoscaling_defaults, each.value)["scale_out_cooldown"]
-    target_value       = merge(var.autoscaling_defaults, each.value)["target_value"]
+    target_value       = merge(var.autoscaling_defaults, each.value)["write_target_value"]
   }
 }
