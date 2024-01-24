@@ -179,9 +179,3 @@ variable "ignore_changes_global_secondary_index" {
   type        = bool
   default     = false
 }
-
-variable "ignore_changes_replica" {
-  description = "Whether to ignore changes lifecycle to replica, useful for provisioning replica tables via `aws_dynamodb_table_replica` resource"
-  type        = bool
-  default     = false
-}
