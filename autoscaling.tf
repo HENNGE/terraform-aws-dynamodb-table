@@ -1,9 +1,13 @@
+locals {
+  table_name = try(aws_dynamodb_table.autoscaled[0].name, aws_dynamodb_table.autoscaled_gsi_ignore[0].name, aws_dynamodb_table.autoscaled_replica_ignore[0].name, aws_dynamodb_table.autoscaled_gsi_ignore_replica_ignore[0].name)
+}
+
 resource "aws_appautoscaling_target" "table_read" {
   count = var.create_table && var.autoscaling_enabled && length(var.autoscaling_read) > 0 ? 1 : 0
 
   max_capacity       = var.autoscaling_read["max_capacity"]
   min_capacity       = var.read_capacity
-  resource_id        = "table/${try(aws_dynamodb_table.autoscaled[0].name, aws_dynamodb_table.autoscaled_gsi_ignore[0].name)}"
+  resource_id        = "table/${local.table_name}"
   scalable_dimension = "dynamodb:table:ReadCapacityUnits"
   service_namespace  = "dynamodb"
 }
@@ -33,7 +37,7 @@ resource "aws_appautoscaling_target" "table_write" {
 
   max_capacity       = var.autoscaling_write["max_capacity"]
   min_capacity       = var.write_capacity
-  resource_id        = "table/${try(aws_dynamodb_table.autoscaled[0].name, aws_dynamodb_table.autoscaled_gsi_ignore[0].name)}"
+  resource_id        = "table/${local.table_name}"
   scalable_dimension = "dynamodb:table:WriteCapacityUnits"
   service_namespace  = "dynamodb"
 }
@@ -63,7 +67,7 @@ resource "aws_appautoscaling_target" "index_read" {
 
   max_capacity       = each.value["read_max_capacity"]
   min_capacity       = each.value["read_min_capacity"]
-  resource_id        = "table/${try(aws_dynamodb_table.autoscaled[0].name, aws_dynamodb_table.autoscaled_gsi_ignore[0].name)}/index/${each.key}"
+  resource_id        = "table/${local.table_name}/index/${each.key}"
   scalable_dimension = "dynamodb:index:ReadCapacityUnits"
   service_namespace  = "dynamodb"
 }
@@ -93,7 +97,7 @@ resource "aws_appautoscaling_target" "index_write" {
 
   max_capacity       = each.value["write_max_capacity"]
   min_capacity       = each.value["write_min_capacity"]
-  resource_id        = "table/${try(aws_dynamodb_table.autoscaled[0].name, aws_dynamodb_table.autoscaled_gsi_ignore[0].name)}/index/${each.key}"
+  resource_id        = "table/${local.table_name}/index/${each.key}"
   scalable_dimension = "dynamodb:index:WriteCapacityUnits"
   service_namespace  = "dynamodb"
 }
