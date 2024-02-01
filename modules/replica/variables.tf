@@ -27,6 +27,18 @@ variable "tags" {
   default     = {}
 }
 
+variable "write_capacity" {
+  description = "The number of write units for this table. If the billing_mode is PROVISIONED, this field should be greater than 0"
+  type        = number
+  default     = null
+}
+
+variable "read_capacity" {
+  description = "The number of read units for this table. If the billing_mode is PROVISIONED, this field should be greater than 0"
+  type        = number
+  default     = null
+}
+
 variable "autoscaling_enabled" {
   description = "Whether or not to enable autoscaling. See note in README about this setting"
   type        = bool
