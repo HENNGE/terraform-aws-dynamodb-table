@@ -74,7 +74,7 @@ resource "aws_appautoscaling_policy" "index_read_policy" {
   name               = "DynamoDBReadCapacityUtilization:table/${var.table_name}/index/${each.key}"
   policy_type        = "TargetTrackingScaling"
   resource_id        = var.create_autoscaling_target ? aws_appautoscaling_target.index_read[each.key].resource_id : "table/${var.table_name}/index/${each.key}"
-  scalable_dimension = "dynamodb:table:WriteCapacityUnits"
+  scalable_dimension = "dynamodb:table:ReadCapacityUnits"
   service_namespace  = "dynamodb"
 
   target_tracking_scaling_policy_configuration {
