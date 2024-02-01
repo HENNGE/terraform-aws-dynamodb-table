@@ -1,5 +1,5 @@
 module "autoscaling" {
-  source = "./autoscaling"
+  source = "./modules/autoscaling"
 
   count = var.autoscaling_enabled ? 1 : 0
 
