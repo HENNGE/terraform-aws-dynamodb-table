@@ -75,12 +75,19 @@ module "dynamodb_table" {
     }
   ]
 
-  replica_regions = [{
-    region_name            = "eu-west-2"
-    kms_key_arn            = aws_kms_key.secondary.arn
-    propagate_tags         = true
-    point_in_time_recovery = true
-  }]
+  tags = local.tags
+}
+
+module "replica" {
+  source = "../../modules/replica"
+
+  providers = {
+    aws = aws.eu_west_2
+  }
+
+  global_table_arn       = module.dynamodb_table.dynamodb_table_arn
+  kms_key_arn            = aws_kms_key.secondary.arn
+  point_in_time_recovery = true
 
   tags = local.tags
 }
