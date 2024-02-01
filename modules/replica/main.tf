@@ -4,6 +4,8 @@ resource "aws_dynamodb_table_replica" "replica" {
   kms_key_arn            = var.kms_key_arn
   point_in_time_recovery = var.point_in_time_recovery
   table_class_override   = var.table_class_override
+
+  tags = var.tags
 }
 
 module "replica_autoscaling" {
