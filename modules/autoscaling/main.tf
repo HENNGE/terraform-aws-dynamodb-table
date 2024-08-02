@@ -7,11 +7,7 @@ resource "aws_appautoscaling_target" "table_read" {
   scalable_dimension = "dynamodb:table:ReadCapacityUnits"
   service_namespace  = "dynamodb"
 
-  lifecycle {
-    ignore_changes = [
-      tags_all,
-    ]
-  }
+  provider = aws.no-tag
 }
 
 resource "aws_appautoscaling_policy" "table_read_policy" {
@@ -43,11 +39,7 @@ resource "aws_appautoscaling_target" "table_write" {
   scalable_dimension = "dynamodb:table:WriteCapacityUnits"
   service_namespace  = "dynamodb"
 
-  lifecycle {
-    ignore_changes = [
-      tags_all,
-    ]
-  }
+  provider = aws.no-tag
 }
 
 resource "aws_appautoscaling_policy" "table_write_policy" {
@@ -79,11 +71,7 @@ resource "aws_appautoscaling_target" "index_read" {
   scalable_dimension = "dynamodb:index:ReadCapacityUnits"
   service_namespace  = "dynamodb"
 
-  lifecycle {
-    ignore_changes = [
-      tags_all,
-    ]
-  }
+  provider = aws.no-tag
 }
 
 resource "aws_appautoscaling_policy" "index_read_policy" {
@@ -115,11 +103,7 @@ resource "aws_appautoscaling_target" "index_write" {
   scalable_dimension = "dynamodb:index:WriteCapacityUnits"
   service_namespace  = "dynamodb"
 
-  lifecycle {
-    ignore_changes = [
-      tags_all,
-    ]
-  }
+  provider = aws.no-tag
 }
 
 resource "aws_appautoscaling_policy" "index_write_policy" {
