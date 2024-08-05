@@ -7,4 +7,9 @@ module "autoscaling" {
   autoscaling_read    = merge({ min_capacity = var.read_capacity }, var.autoscaling_read)
   autoscaling_write   = merge({ min_capacity = var.write_capacity }, var.autoscaling_write)
   autoscaling_indexes = var.autoscaling_indexes
+
+  providers = {
+    aws        = aws
+    aws.no-tag = aws
+  }
 }

@@ -26,12 +26,6 @@ variable "autoscaling_indexes" {
   default     = {}
 }
 
-variable "create_autoscaling_target" {
-  description = "Whether to create autoscaling target resources"
-  type        = bool
-  default     = true
-}
-
 variable "table_name" {
   description = "DynamoDB table name"
   type        = string
