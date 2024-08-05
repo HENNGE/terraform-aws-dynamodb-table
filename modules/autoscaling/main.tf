@@ -7,6 +7,7 @@ resource "aws_appautoscaling_target" "table_read" {
   scalable_dimension = "dynamodb:table:ReadCapacityUnits"
   service_namespace  = "dynamodb"
 
+  # Workaround for https://github.com/hashicorp/terraform-provider-aws/issues/31839
   provider = aws.no-tag
 }
 
@@ -39,6 +40,7 @@ resource "aws_appautoscaling_target" "table_write" {
   scalable_dimension = "dynamodb:table:WriteCapacityUnits"
   service_namespace  = "dynamodb"
 
+  # Workaround for https://github.com/hashicorp/terraform-provider-aws/issues/31839
   provider = aws.no-tag
 }
 
@@ -71,6 +73,7 @@ resource "aws_appautoscaling_target" "index_read" {
   scalable_dimension = "dynamodb:index:ReadCapacityUnits"
   service_namespace  = "dynamodb"
 
+  # Workaround for https://github.com/hashicorp/terraform-provider-aws/issues/31839
   provider = aws.no-tag
 }
 
@@ -103,6 +106,7 @@ resource "aws_appautoscaling_target" "index_write" {
   scalable_dimension = "dynamodb:index:WriteCapacityUnits"
   service_namespace  = "dynamodb"
 
+  # Workaround for https://github.com/hashicorp/terraform-provider-aws/issues/31839
   provider = aws.no-tag
 }
 
