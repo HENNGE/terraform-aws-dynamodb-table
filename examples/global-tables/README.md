@@ -36,6 +36,7 @@ Note that this example may create resources which can cost money (AWS Elastic IP
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_dynamodb_table"></a> [dynamodb\_table](#module\_dynamodb\_table) | ../../ | n/a |
+| <a name="module_replica"></a> [replica](#module\_replica) | ../../modules/replica | n/a |
 
 ## Resources
 

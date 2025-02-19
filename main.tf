@@ -68,17 +68,6 @@ resource "aws_dynamodb_table" "this" {
     }
   }
 
-  dynamic "replica" {
-    for_each = var.replica_regions
-
-    content {
-      region_name            = replica.value.region_name
-      kms_key_arn            = lookup(replica.value, "kms_key_arn", null)
-      propagate_tags         = lookup(replica.value, "propagate_tags", null)
-      point_in_time_recovery = lookup(replica.value, "point_in_time_recovery", null)
-    }
-  }
-
   server_side_encryption {
     enabled     = var.server_side_encryption_enabled
     kms_key_arn = var.server_side_encryption_kms_key_arn
@@ -135,6 +124,10 @@ resource "aws_dynamodb_table" "this" {
     create = lookup(var.timeouts, "create", null)
     delete = lookup(var.timeouts, "delete", null)
     update = lookup(var.timeouts, "update", null)
+  }
+
+  lifecycle {
+    ignore_changes = [replica]
   }
 }
 
@@ -208,17 +201,6 @@ resource "aws_dynamodb_table" "autoscaled" {
     }
   }
 
-  dynamic "replica" {
-    for_each = var.replica_regions
-
-    content {
-      region_name            = replica.value.region_name
-      kms_key_arn            = lookup(replica.value, "kms_key_arn", null)
-      propagate_tags         = lookup(replica.value, "propagate_tags", null)
-      point_in_time_recovery = lookup(replica.value, "point_in_time_recovery", null)
-    }
-  }
-
   server_side_encryption {
     enabled     = var.server_side_encryption_enabled
     kms_key_arn = var.server_side_encryption_kms_key_arn
@@ -278,7 +260,7 @@ resource "aws_dynamodb_table" "autoscaled" {
   }
 
   lifecycle {
-    ignore_changes = [read_capacity, write_capacity]
+    ignore_changes = [read_capacity, write_capacity, replica]
   }
 }
 
@@ -343,17 +325,6 @@ resource "aws_dynamodb_table" "autoscaled_gsi_ignore" {
     }
   }
 
-  dynamic "replica" {
-    for_each = var.replica_regions
-
-    content {
-      region_name            = replica.value.region_name
-      kms_key_arn            = lookup(replica.value, "kms_key_arn", null)
-      propagate_tags         = lookup(replica.value, "propagate_tags", null)
-      point_in_time_recovery = lookup(replica.value, "point_in_time_recovery", null)
-    }
-  }
-
   server_side_encryption {
     enabled     = var.server_side_encryption_enabled
     kms_key_arn = var.server_side_encryption_kms_key_arn
@@ -373,6 +344,6 @@ resource "aws_dynamodb_table" "autoscaled_gsi_ignore" {
   }
 
   lifecycle {
-    ignore_changes = [global_secondary_index, read_capacity, write_capacity]
+    ignore_changes = [global_secondary_index, read_capacity, write_capacity, replica]
   }
 }

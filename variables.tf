@@ -76,12 +76,6 @@ variable "local_secondary_indexes" {
   default     = []
 }
 
-variable "replica_regions" {
-  description = "Region names for creating replicas for a global DynamoDB table."
-  type        = any
-  default     = []
-}
-
 variable "stream_enabled" {
   description = "Indicates whether Streams are to be enabled (true) or disabled (false)."
   type        = bool
@@ -126,16 +120,6 @@ variable "autoscaling_enabled" {
   description = "Whether or not to enable autoscaling. See note in README about this setting"
   type        = bool
   default     = false
-}
-
-variable "autoscaling_defaults" {
-  description = "A map of default autoscaling settings"
-  type        = map(string)
-  default = {
-    scale_in_cooldown  = 0
-    scale_out_cooldown = 0
-    target_value       = 70
-  }
 }
 
 variable "autoscaling_read" {

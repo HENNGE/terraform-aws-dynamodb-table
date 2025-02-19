@@ -23,6 +23,8 @@ repos:
           - '--args=--only=terraform_standard_module_structure'
           - '--args=--only=terraform_workspace_remote'
       - id: terraform_validate
+        # Workaround to this known issue: https://github.com/hashicorp/terraform/issues/28490
+        exclude: '^modules/'
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
