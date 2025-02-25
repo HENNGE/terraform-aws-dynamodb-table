@@ -9,6 +9,10 @@ resource "random_pet" "this" {
 module "dynamodb_table" {
   source = "../../"
 
+  providers = {
+    aws = aws
+  }
+
   name                        = "my-table-${random_pet.this.id}"
   hash_key                    = "id"
   range_key                   = "title"
@@ -37,8 +41,18 @@ module "dynamodb_table" {
       range_key          = "age"
       projection_type    = "INCLUDE"
       non_key_attributes = ["id"]
+
+      on_demand_throughput = {
+        max_write_request_units = 1
+        max_read_request_units  = 1
+      }
     }
   ]
+
+  on_demand_throughput = {
+    max_read_request_units  = 1
+    max_write_request_units = 1
+  }
 
   tags = {
     Terraform   = "true"
@@ -49,6 +63,10 @@ module "dynamodb_table" {
 
 module "disabled_dynamodb_table" {
   source = "../../"
+
+  providers = {
+    aws = aws
+  }
 
   create_table = false
 }

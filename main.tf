@@ -11,6 +11,10 @@ resource "aws_dynamodb_table" "this" {
   stream_view_type            = var.stream_view_type
   table_class                 = var.table_class
   deletion_protection_enabled = var.deletion_protection_enabled
+  restore_date_time           = var.restore_date_time
+  restore_source_name         = var.restore_source_name
+  restore_source_table_arn    = var.restore_source_table_arn
+  restore_to_latest_time      = var.restore_to_latest_time
 
   ttl {
     enabled        = var.ttl_enabled
@@ -52,6 +56,15 @@ resource "aws_dynamodb_table" "this" {
       read_capacity      = lookup(global_secondary_index.value, "read_capacity", null)
       write_capacity     = lookup(global_secondary_index.value, "write_capacity", null)
       non_key_attributes = lookup(global_secondary_index.value, "non_key_attributes", null)
+
+      dynamic "on_demand_throughput" {
+        for_each = try([global_secondary_index.value.on_demand_throughput], [])
+
+        content {
+          max_read_request_units  = try(on_demand_throughput.value.max_read_request_units, null)
+          max_write_request_units = try(on_demand_throughput.value.max_write_request_units, null)
+        }
+      }
     }
   }
 
@@ -88,6 +101,15 @@ resource "aws_dynamodb_table" "this" {
         bucket_owner = try(import_table.value.bucket_owner, null)
         key_prefix   = try(import_table.value.key_prefix, null)
       }
+    }
+  }
+
+  dynamic "on_demand_throughput" {
+    for_each = length(var.on_demand_throughput) > 0 ? [var.on_demand_throughput] : []
+
+    content {
+      max_read_request_units  = try(on_demand_throughput.value.max_read_request_units, null)
+      max_write_request_units = try(on_demand_throughput.value.max_write_request_units, null)
     }
   }
 
@@ -122,6 +144,10 @@ resource "aws_dynamodb_table" "autoscaled" {
   stream_view_type            = var.stream_view_type
   table_class                 = var.table_class
   deletion_protection_enabled = var.deletion_protection_enabled
+  restore_date_time           = var.restore_date_time
+  restore_source_name         = var.restore_source_name
+  restore_source_table_arn    = var.restore_source_table_arn
+  restore_to_latest_time      = var.restore_to_latest_time
 
   ttl {
     enabled        = var.ttl_enabled
@@ -163,6 +189,15 @@ resource "aws_dynamodb_table" "autoscaled" {
       read_capacity      = lookup(global_secondary_index.value, "read_capacity", null)
       write_capacity     = lookup(global_secondary_index.value, "write_capacity", null)
       non_key_attributes = lookup(global_secondary_index.value, "non_key_attributes", null)
+
+      dynamic "on_demand_throughput" {
+        for_each = try([global_secondary_index.value.on_demand_throughput], [])
+
+        content {
+          max_read_request_units  = try(on_demand_throughput.value.max_read_request_units, null)
+          max_write_request_units = try(on_demand_throughput.value.max_write_request_units, null)
+        }
+      }
     }
   }
 
@@ -202,6 +237,15 @@ resource "aws_dynamodb_table" "autoscaled" {
     }
   }
 
+  dynamic "on_demand_throughput" {
+    for_each = length(var.on_demand_throughput) > 0 ? [var.on_demand_throughput] : []
+
+    content {
+      max_read_request_units  = try(on_demand_throughput.value.max_read_request_units, null)
+      max_write_request_units = try(on_demand_throughput.value.max_write_request_units, null)
+    }
+  }
+
   tags = merge(
     var.tags,
     {
@@ -233,6 +277,10 @@ resource "aws_dynamodb_table" "autoscaled_gsi_ignore" {
   stream_view_type            = var.stream_view_type
   table_class                 = var.table_class
   deletion_protection_enabled = var.deletion_protection_enabled
+  restore_date_time           = var.restore_date_time
+  restore_source_name         = var.restore_source_name
+  restore_source_table_arn    = var.restore_source_table_arn
+  restore_to_latest_time      = var.restore_to_latest_time
 
   ttl {
     enabled        = var.ttl_enabled

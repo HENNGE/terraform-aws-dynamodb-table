@@ -41,6 +41,10 @@ resource "aws_kms_key" "secondary" {
 module "dynamodb_table" {
   source = "../../"
 
+  providers = {
+    aws = aws
+  }
+
   name             = "my-table-${random_pet.this.id}"
   hash_key         = "id"
   range_key        = "title"
@@ -82,7 +86,8 @@ module "replica" {
   source = "../../modules/replica"
 
   providers = {
-    aws = aws.euwest2
+    aws        = aws.euwest2
+    aws.no-tag = aws.euwest2
   }
 
   global_table_arn       = module.dynamodb_table.dynamodb_table_arn
