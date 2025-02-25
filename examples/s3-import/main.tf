@@ -9,6 +9,10 @@ resource "random_pet" "this" {
 module "import_json_table" {
   source = "../../"
 
+  providers = {
+    aws = aws
+  }
+
   name                        = "import-json-${random_pet.this.id}"
   hash_key                    = "id"
   range_key                   = "title"
@@ -41,6 +45,10 @@ module "import_json_table" {
 
 module "import_csv_table" {
   source = "../../"
+
+  providers = {
+    aws = aws
+  }
 
   name                        = "import-csv-${random_pet.this.id}"
   hash_key                    = "id"

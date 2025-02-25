@@ -9,6 +9,10 @@ resource "random_pet" "this" {
 module "dynamodb_table" {
   source = "../../"
 
+  providers = {
+    aws = aws
+  }
+
   name                        = "my-table-${random_pet.this.id}"
   hash_key                    = "id"
   range_key                   = "title"
@@ -59,6 +63,10 @@ module "dynamodb_table" {
 
 module "disabled_dynamodb_table" {
   source = "../../"
+
+  providers = {
+    aws = aws
+  }
 
   create_table = false
 }
