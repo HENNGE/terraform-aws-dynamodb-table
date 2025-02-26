@@ -158,6 +158,12 @@ variable "import_table" {
   default     = {}
 }
 
+variable "ignore_changes_import_table" {
+  description = "Whether to ignore changes to import table, useful to prevent accidental replacement of imported tables"
+  type        = bool
+  default     = false
+}
+
 variable "ignore_changes_global_secondary_index" {
   description = "Whether to ignore changes lifecycle to global secondary indices, useful for provisioned tables with scaling"
   type        = bool

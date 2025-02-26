@@ -1,5 +1,5 @@
-resource "aws_dynamodb_table" "this" {
-  count = var.create_table && !var.autoscaling_enabled && !var.ignore_changes_import_table ? 1 : 0
+resource "aws_dynamodb_table" "import_ignore" {
+  count = var.create_table && !var.autoscaling_enabled && var.ignore_changes_import_table ? 1 : 0
 
   name                        = var.name
   billing_mode                = var.billing_mode
@@ -127,12 +127,12 @@ resource "aws_dynamodb_table" "this" {
   }
 
   lifecycle {
-    ignore_changes = [replica]
+    ignore_changes = [import_table, replica]
   }
 }
 
-resource "aws_dynamodb_table" "autoscaled" {
-  count = var.create_table && var.autoscaling_enabled && !var.ignore_changes_global_secondary_index && !var.ignore_changes_import_table ? 1 : 0
+resource "aws_dynamodb_table" "autoscaled_import_ignore" {
+  count = var.create_table && var.autoscaling_enabled && !var.ignore_changes_global_secondary_index && var.ignore_changes_import_table ? 1 : 0
 
   name                        = var.name
   billing_mode                = var.billing_mode
@@ -260,12 +260,12 @@ resource "aws_dynamodb_table" "autoscaled" {
   }
 
   lifecycle {
-    ignore_changes = [read_capacity, write_capacity, replica]
+    ignore_changes = [import_table, read_capacity, write_capacity, replica]
   }
 }
 
-resource "aws_dynamodb_table" "autoscaled_gsi_ignore" {
-  count = var.create_table && var.autoscaling_enabled && var.ignore_changes_global_secondary_index && !var.ignore_changes_import_table ? 1 : 0
+resource "aws_dynamodb_table" "autoscaled_gsi_ignore_import_ignore" {
+  count = var.create_table && var.autoscaling_enabled && var.ignore_changes_global_secondary_index && var.ignore_changes_import_table ? 1 : 0
 
   name                        = var.name
   billing_mode                = var.billing_mode
@@ -344,6 +344,6 @@ resource "aws_dynamodb_table" "autoscaled_gsi_ignore" {
   }
 
   lifecycle {
-    ignore_changes = [global_secondary_index, read_capacity, write_capacity, replica]
+    ignore_changes = [import_table, global_secondary_index, read_capacity, write_capacity, replica]
   }
 }
